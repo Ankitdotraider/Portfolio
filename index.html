@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ankit Ram</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f9f8f6;
+    --text: #111;
+    --muted: #888;
+    --border: #e5e5e5;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 48px 0 80px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 80px;
+  }
+  .nav-name {
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+    text-decoration: none;
+    color: var(--text);
+  }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  .section { margin-bottom: 88px; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .hero { margin-bottom: 64px; }
+  .hero h1 {
+    font-size: clamp(36px, 7vw, 52px);
+    font-weight: 400;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 24px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--muted);
+  }
+  .hero-bio {
+    font-size: 15px;
+    color: #444;
+    max-width: 520px;
+    line-height: 1.8;
+    margin-bottom: 32px;
+  }
+  .hero-bio a {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: var(--border);
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.2s;
+  }
+  .hero-bio a:hover { text-decoration-color: var(--text); }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .status-dot {
+    width: 7px; height: 7px;
+    background: #22c55e;
+    border-radius: 50%;
+    animation: blink 2s ease infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* Stats row - CF stats load live */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--border);
+    margin-bottom: 88px;
+  }
+  .stat {
+    padding: 24px 16px;
+    border-right: 1px solid var(--border);
+    text-align: center;
+  }
+  .stat:last-child { border-right: none; }
+  .stat-val {
+    font-size: 26px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    display: block;
+    margin-bottom: 4px;
+    min-height: 36px;
+  }
+  .stat-key {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .loading { color: var(--muted); font-size: 18px; }
+
+  .achievement {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: start;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .achievement:first-of-type { border-top: 1px solid var(--border); }
+  .ach-title {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    letter-spacing: -0.2px;
+  }
+  .ach-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 440px;
+  }
+  .ach-meta { text-align: right; flex-shrink: 0; }
+  .ach-highlight {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--text);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .ach-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .project {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: start;
+  }
+  .project:first-of-type { border-top: 1px solid var(--border); }
+  .project-name {
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+    margin-bottom: 6px;
+  }
+  .project-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 12px;
+    max-width: 440px;
+  }
+  .project-stack { display: flex; flex-wrap: wrap; gap: 6px; }
+  .stack-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+  }
+  .project-links-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+    flex-shrink: 0;
+  }
+  .plink {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+    white-space: nowrap;
+  }
+  .plink:hover, .plink.live { color: var(--text); }
+
+  /* Skills grid — 4 cols now */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+  }
+  .skill-group-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .skill-group-items { display: flex; flex-direction: column; gap: 8px; }
+  .skill-group-items span { font-size: 13px; color: #333; }
+
+  /* LC stats */
+  .lc-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid var(--border);
+    margin-top: 28px;
+  }
+  .lc-stat {
+    padding: 20px 16px;
+    border-right: 1px solid var(--border);
+    text-align: center;
+  }
+  .lc-stat:last-child { border-right: none; }
+  .lc-stat-val {
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .lc-stat-key {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .easy { color: #22c55e; }
+  .medium { color: #f59e0b; }
+  .hard { color: #ef4444; }
+
+  .contact-row {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+  .clink {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .clink:hover { color: var(--text); }
+
+  footer {
+    padding: 40px 0 48px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 80px;
+  }
+
+  .fade {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade.in { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-name">Ankit Ram</a>
+  <ul class="nav-links">
+    <li><a href="#achievements">Achievements</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="hero fade">
+  <h1>Competitive programmer<br><em>and developer.</em></h1>
+  <p class="hero-bio">
+    2nd semester CS student at IILM University, Greater Noida. Rated on <a href="https://codeforces.com/profile/codecrusader69" target="_blank">Codeforces</a>, building tools that matter, and grinding algorithms daily. Interested in high-frequency trading and systems programming.
+  </p>
+  <span class="status">
+    <span class="status-dot"></span>
+    Available for internships · Summer 2026
+  </span>
+</div>
+
+<!-- Live CF Stats -->
+<div class="stats-row fade">
+  <div class="stat">
+    <span class="stat-val loading" id="cf-rating">—</span>
+    <span class="stat-key">CF Rating</span>
+  </div>
+  <div class="stat">
+    <span class="stat-val loading" id="cf-maxrating">—</span>
+    <span class="stat-key">CF Max</span>
+  </div>
+  <div class="stat">
+    <span class="stat-val">26</span>
+    <span class="stat-key">LC Solved</span>
+  </div>
+  <div class="stat">
+    <span class="stat-val">98%</span>
+    <span class="stat-key">Java Diploma</span>
+  </div>
+</div>
+
+<!-- Achievements -->
+<div class="section fade" id="achievements">
+  <p class="section-label">Achievements</p>
+
+  <div class="achievement">
+    <div>
+      <div class="ach-title">Optima Techfest — 1st Place</div>
+      <div class="ach-desc">Won the 3D Modelling Optimisation Workshop at Optima Techfest, competing across disciplines in a technical challenge combining design precision and optimisation logic.</div>
+    </div>
+    <div class="ach-meta">
+      <span class="ach-highlight">₹20,000 (~$240)</span>
+      <span class="ach-year">2023</span>
+    </div>
+  </div>
+
+  <div class="achievement">
+    <div>
+      <div class="ach-title">Diploma in Java Programming — Distinction</div>
+      <div class="ach-desc">Completed a formal Java programming diploma with distinction, covering core Java, OOP principles, data structures, and software design fundamentals.</div>
+    </div>
+    <div class="ach-meta">
+      <span class="ach-highlight">98%</span>
+      <span class="ach-year">Distinction</span>
+    </div>
+  </div>
+
+  <div class="achievement">
+    <div>
+      <div class="ach-title">Codeforces — Rated Competitor</div>
+      <div class="ach-desc">Actively competing in Div. 2 rounds. Solved problems across implementation, math, greedy, strings, and dynamic programming with a 32-day consecutive solving streak.</div>
+    </div>
+    <div class="ach-meta">
+      <span class="ach-highlight" id="cf-rating-ach">Rating 657</span>
+      <span class="ach-year">2026</span>
+    </div>
+  </div>
+</div>
+
+<!-- Projects -->
+<div class="section fade" id="projects">
+  <p class="section-label">Projects</p>
+
+  <div class="project">
+    <div>
+      <div class="project-name">CF Tracker</div>
+      <div class="project-desc">Codeforces analytics dashboard. Visualizes rating history, tag-wise problem breakdown, contest performance, personalized problem recommendations based on weak topics, and side-by-side user comparison.</div>
+      <div class="project-stack">
+        <span class="stack-tag">JavaScript</span>
+        <span class="stack-tag">HTML/CSS</span>
+        <span class="stack-tag">Codeforces API</span>
+        <span class="stack-tag">Chart.js</span>
+        <span class="stack-tag">Vercel</span>
+      </div>
+    </div>
+    <div class="project-links-col">
+      <a href="https://cf-tracker-app.vercel.app" target="_blank" class="plink live">↗ Live</a>
+      <a href="https://github.com/Ankitdotraider/cf-tracker" target="_blank" class="plink">GitHub</a>
+    </div>
+  </div>
+</div>
+
+<!-- Skills -->
+<div class="section fade">
+  <p class="section-label">Skills</p>
+  <div class="skills-grid">
+    <div>
+      <div class="skill-group-title">Languages</div>
+      <div class="skill-group-items">
+        <span>C++</span>
+        <span>Java</span>
+        <span>Python</span>
+        <span>JavaScript</span>
+        <span>HTML / CSS</span>
+      </div>
+    </div>
+    <div>
+      <div class="skill-group-title">Algorithms & CP</div>
+      <div class="skill-group-items">
+        <span>Dynamic Programming</span>
+        <span>Greedy</span>
+        <span>Binary Search</span>
+        <span>Two Pointers</span>
+        <span>Sorting & Searching</span>
+      </div>
+    </div>
+    <div>
+      <div class="skill-group-title">Machine Learning</div>
+      <div class="skill-group-items">
+        <span>NumPy / Pandas</span>
+        <span>Matplotlib</span>
+        <span>Scikit-learn</span>
+        <span>Data Analysis</span>
+        <span>Model Training</span>
+      </div>
+    </div>
+    <div>
+      <div class="skill-group-title">Tools</div>
+      <div class="skill-group-items">
+        <span>Git / GitHub</span>
+        <span>VS Code</span>
+        <span>Vercel</span>
+        <span>Jupyter Notebook</span>
+        <span>Codeforces / LeetCode</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Competitive Programming -->
+<div class="section fade">
+  <p class="section-label">Competitive Programming</p>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; border: 1px solid var(--border);">
+    <div style="padding: 28px; border-right: 1px solid var(--border);">
+      <div class="skill-group-title" style="margin-bottom: 16px;">Codeforces</div>
+      <div style="font-size: 13px; color: #444; line-height: 2;">
+        <div>Handle — <a href="https://codeforces.com/profile/codecrusader69" target="_blank" style="color:var(--text); text-decoration:underline; text-decoration-color: var(--border); text-underline-offset:3px;">codecrusader69</a></div>
+        <div>Rating — <span id="cf-rating-inline">loading...</span></div>
+        <div>Max Rating — <span id="cf-max-inline">loading...</span></div>
+        <div>Rank — <span id="cf-rank-inline">loading...</span></div>
+      </div>
+    </div>
+    <div style="padding: 28px;">
+      <div class="skill-group-title" style="margin-bottom: 16px;">LeetCode</div>
+      <div style="font-size: 13px; color: #444; line-height: 2;">
+        <div>Handle — <a href="https://leetcode.com/anky2" target="_blank" style="color:var(--text); text-decoration:underline; text-decoration-color: var(--border); text-underline-offset:3px;">anky2</a></div>
+        <div>Solved — <span>26 problems</span></div>
+        <div>Easy — <span class="easy">11</span> · Med — <span class="medium">13</span> · Hard — <span class="hard">2</span></div>
+        <div>Max Streak — 22 days</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Contact -->
+<div class="section fade" id="contact">
+  <p class="section-label">Contact</p>
+  <p style="font-size:15px; color:#444; margin-bottom: 28px; max-width: 400px;">
+    Open to internship opportunities for Summer 2026. Feel free to reach out.
+  </p>
+  <div class="contact-row">
+    <a href="mailto:your@email.com" class="clink">your@email.com</a>
+    <a href="https://github.com/Ankitdotraider" target="_blank" class="clink">GitHub</a>
+    <a href="https://codeforces.com/profile/codecrusader69" target="_blank" class="clink">Codeforces</a>
+    <a href="https://leetcode.com/anky2" target="_blank" class="clink">LeetCode</a>
+    <a href="https://twitter.com/halkattjawaniii" target="_blank" class="clink">Twitter</a>
+  </div>
+</div>
+
+<footer>
+  <span>Ankit Ram © 2026</span>
+  <span>Greater Noida, IN</span>
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade').forEach(el => observer.observe(el));
+
+  // Live CF stats
+  async function loadCFStats() {
+    try {
+      const res = await fetch('https://codeforces.com/api/user.info?handles=codecrusader69');
+      const data = await res.json();
+      const user = data.result[0];
+
+      document.getElementById('cf-rating').textContent = user.rating || '—';
+      document.getElementById('cf-maxrating').textContent = user.maxRating || '—';
+      document.getElementById('cf-rating-ach').textContent = `Rating ${user.rating}`;
+      document.getElementById('cf-rating-inline').textContent = user.rating;
+      document.getElementById('cf-max-inline').textContent = user.maxRating;
+      document.getElementById('cf-rank-inline').textContent = user.rank || '—';
+
+      // Remove loading style
+      document.getElementById('cf-rating').classList.remove('loading');
+      document.getElementById('cf-maxrating').classList.remove('loading');
+    } catch(e) {
+      document.getElementById('cf-rating').textContent = '657';
+      document.getElementById('cf-maxrating').textContent = '657';
+    }
+  }
+
+  loadCFStats();
+</script>
+</body>
+</html>
