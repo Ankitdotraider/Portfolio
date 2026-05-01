@@ -269,6 +269,18 @@
     .badge-orange { color: var(--accent); border-color: rgba(249,115,22,0.3); background: rgba(249,115,22,0.08); }
     .badge-green { color: var(--green); border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.08); }
 
+    .cf-trivia {
+      margin-top: 16px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--accent);
+      background: rgba(249,115,22,0.06);
+      border: 1px solid rgba(249,115,22,0.15);
+      border-radius: 8px;
+      padding: 10px 12px;
+      line-height: 1.6;
+    }
+
     /* SECTIONS */
     section {
       max-width: 1200px;
@@ -596,11 +608,8 @@
     <h1>Hello, I'm<br><span class="accent">Ankit Ram</span> 👋</h1>
     <div class="hero-bio">
       <p>I'm a builder. I've been coding for <strong>7 years</strong> — started because I wanted to make games, stayed because I fell in love with algorithms.</p>
-      <p>CS at IILM Delhi. I grind <strong>competitive programming</strong> daily and build full-stack products that actually work.
-      <p>I don't believe I'm the best programmer in the room. But I believe in showing up every day and getting sharper.</p>
-    </div>
-    <div class="hero-quote">
-      Every problem I solve is one step closer to systems that run at the edge of what's computationally possible.
+      <p>CS at IILM Delhi. I grind <strong>competitive programming</strong> daily and build full-stack products that actually work.</p>
+      <p>I don't believe I'm the best programmer in the world, But I believe in relentless progress.</p>
     </div>
     <div class="hero-ctas">
       <a href="#projects" class="btn-primary">View Projects →</a>
@@ -616,12 +625,12 @@
     <div class="card-label">// stats.json</div>
     <div class="stats-grid">
       <div class="stat">
-        <div class="stat-val">1051</div>
+        <div class="stat-val" id="cf-rating">—</div>
         <div class="stat-label">CF Rating</div>
       </div>
       <div class="stat">
-        <div class="stat-val">1200</div>
-        <div class="stat-label">Target</div>
+        <div class="stat-val" id="cf-max-rating">—</div>
+        <div class="stat-label">Peak Rating</div>
       </div>
       <div class="stat">
         <div class="stat-val">7yr</div>
@@ -638,6 +647,10 @@
       <span><span class="badge badge-orange">codecrusader69</span></span>
     </div>
     <div class="card-row">
+      <span>Rank</span>
+      <span id="cf-rank" style="color: var(--accent); font-family: 'DM Mono', monospace; font-size: 12px;">—</span>
+    </div>
+    <div class="card-row">
       <span>Status</span>
       <span><span class="badge badge-green">open to work</span></span>
     </div>
@@ -645,11 +658,14 @@
     <div class="rating-bar-wrap">
       <div class="rating-bar-label">
         <span>Rating progress</span>
-        <span>1051 / 1200</span>
+        <span id="bar-label">— / 2000</span>
       </div>
       <div class="rating-bar-track">
-        <div class="rating-bar-fill" style="width: 87%"></div>
+        <div class="rating-bar-fill" id="hero-bar" style="width: 0%"></div>
       </div>
+    </div>
+    <div class="cf-trivia" id="cf-trivia" style="display:none;">
+      ⚡ Only ~5% of active Codeforces users ever reach Specialist (1400+). Every rating point from here is earned harder than the last.
     </div>
   </div>
 </div>
@@ -689,7 +705,7 @@
           <div class="t-line"><span class="t-prompt">POST</span><span class="t-cmd">/signup</span></div>
           <div class="t-line"><span class="t-prompt">→</span><span class="t-out">{ token: "eyJhbG..." }</span></div>
           <div class="t-line"><span class="t-prompt">GET</span><span class="t-cmd">/me/stats</span></div>
-          <div class="t-line"><span class="t-prompt">→</span><span class="t-out">{ rating: 1051, solved: 83 }</span></div>
+          <div class="t-line"><span class="t-prompt">→</span><span class="t-out" id="terminal-rating">{ rating: —, solved: 83 }</span></div>
           <div class="t-line"><span class="t-prompt">DB</span><span class="t-cmd">User → Railway/Postgres</span></div>
         </div>
       </div>
@@ -746,8 +762,8 @@
     <div class="achievement fade-up">
       <div class="ach-icon">⚡</div>
       <div class="ach-content">
-        <div class="ach-title">Codeforces Rating: 1051 · Target: 1200</div>
-        <div class="ach-sub">Active competitive programmer. 2 CF problems + 1 LeetCode daily. Consistent grind toward expert-level rating.</div>
+        <div class="ach-title" id="ach-cf-title">Codeforces Rating: — · Peak: —</div>
+        <div class="ach-sub">Active competitive programmer.Consistent grind toward expert-level rating.</div>
       </div>
     </div>
     <div class="achievement fade-up">
@@ -760,7 +776,7 @@
     <div class="achievement fade-up">
       <div class="ach-icon">📐</div>
       <div class="ach-content">
-        <div class="ach-title">JEE Advanced — Rank 17,806</div>
+        <div class="ach-title">JEE Advanced</div>
         <div class="ach-sub">One of the toughest engineering entrance exams in the world. Cleared it, moved on, kept building.</div>
       </div>
     </div>
@@ -807,10 +823,10 @@
       <div class="rating-bar-wrap" style="margin-bottom: 20px;">
         <div class="rating-bar-label">
           <span>CF Rating</span>
-          <span>1051 → 1200</span>
+          <span id="cp-bar-label">— → 2000</span>
         </div>
         <div class="rating-bar-track">
-          <div class="rating-bar-fill" style="width: 87%"></div>
+          <div class="rating-bar-fill" id="cp-bar" style="width: 0%"></div>
         </div>
       </div>
       <div class="rating-bar-wrap" style="margin-bottom: 20px;">
@@ -824,9 +840,7 @@
       </div>
       <div class="card-divider" style="margin: 20px 0;"></div>
       <div class="card-row"><span>Handle</span><span class="badge badge-orange">codecrusader69</span></div>
-      <div class="card-row"><span>Daily</span><span>2 CF + 1 LC</span></div>
       <div class="card-row"><span>Platform</span><span>Codeforces + LeetCode</span></div>
-      <div class="card-row"><span>Long-term target</span><span>HFT (Jane Street, Optiver)</span></div>
     </div>
   </div>
 </section>
@@ -871,14 +885,64 @@
   const barObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        const target = entry.target.style.width;
-        entry.target.style.width = '0%';
-        setTimeout(() => { entry.target.style.width = target; }, 100);
+        const target = entry.target.dataset.width;
+        if (target) {
+          entry.target.style.width = '0%';
+          setTimeout(() => { entry.target.style.width = target; }, 100);
+        }
         barObserver.unobserve(entry.target);
       }
     });
   }, { threshold: 0.5 });
   bars.forEach(b => barObserver.observe(b));
+
+  // ── CF API ──────────────────────────────────────────────
+  const TARGET = 2000;
+
+  fetch('https://codeforces.com/api/user.info?handles=codecrusader69')
+    .then(r => r.json())
+    .then(data => {
+      const user = data.result[0];
+      const rating    = user.rating    ?? 0;
+      const maxRating = user.maxRating ?? 0;
+      const rank      = user.rank      ?? 'unrated';
+
+      const pct = Math.min((rating / TARGET) * 100, 100).toFixed(1);
+
+      // Hero card
+      document.getElementById('cf-rating').textContent    = rating;
+      document.getElementById('cf-max-rating').textContent = maxRating;
+      document.getElementById('cf-rank').textContent       = rank;
+      document.getElementById('bar-label').textContent     = `${rating} / ${TARGET}`;
+
+      const heroBar = document.getElementById('hero-bar');
+      heroBar.dataset.width = pct + '%';
+      heroBar.style.width   = pct + '%';
+
+      // CP section bar
+      document.getElementById('cp-bar-label').textContent = `${rating} → ${TARGET}`;
+      const cpBar = document.getElementById('cp-bar');
+      cpBar.dataset.width = pct + '%';
+      cpBar.style.width   = pct + '%';
+
+      // Terminal
+      document.getElementById('terminal-rating').textContent = `{ rating: ${rating}, solved: 83 }`;
+
+      // Achievements
+      document.getElementById('ach-cf-title').textContent =
+        `Codeforces Rating: ${rating} · Peak: ${maxRating}`;
+
+      // Trivia — show once data loaded
+      document.getElementById('cf-trivia').style.display = 'block';
+    })
+    .catch(err => {
+      console.error('CF API error:', err);
+      // Fallback to last known values
+      ['cf-rating', 'cf-max-rating'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.textContent === '—') el.textContent = '—';
+      });
+    });
 </script>
 </body>
 </html>
