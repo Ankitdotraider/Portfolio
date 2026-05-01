@@ -1,536 +1,884 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ankit Ram</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #f9f8f6;
-    --text: #111;
-    --muted: #888;
-    --border: #e5e5e5;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ankit Ram</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --bg2: #111118;
+      --surface: #16161f;
+      --border: #1e1e2e;
+      --accent: #f97316;
+      --accent2: #fb923c;
+      --text: #e8e8f0;
+      --muted: #6b6b80;
+      --muted2: #9292a8;
+      --green: #22c55e;
+    }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    line-height: 1.6;
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
+    html { scroll-behavior: smooth; }
 
-  nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 48px 0 80px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 80px;
-  }
-  .nav-name {
-    font-size: 15px;
-    font-weight: 500;
-    letter-spacing: -0.3px;
-    text-decoration: none;
-    color: var(--text);
-  }
-  .nav-links { display: flex; gap: 28px; list-style: none; }
-  .nav-links a {
-    font-size: 13px;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--text); }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
 
-  .section { margin-bottom: 88px; }
+    /* grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 9999;
+    }
 
-  .section-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 28px;
-  }
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s, background 0.3s;
+      backdrop-filter: blur(0px);
+    }
+    nav.scrolled {
+      border-color: var(--border);
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(16px);
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--muted2);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-resume {
+      background: var(--accent);
+      color: #000 !important;
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-weight: 500 !important;
+      font-size: 13px !important;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s, transform 0.1s !important;
+    }
+    .nav-resume:hover { background: var(--accent2) !important; transform: translateY(-1px); }
 
-  .hero { margin-bottom: 64px; }
-  .hero h1 {
-    font-size: clamp(36px, 7vw, 52px);
-    font-weight: 400;
-    letter-spacing: -1.5px;
-    line-height: 1.1;
-    margin-bottom: 24px;
-  }
-  .hero h1 em {
-    font-style: italic;
-    font-weight: 300;
-    color: var(--muted);
-  }
-  .hero-bio {
-    font-size: 15px;
-    color: #444;
-    max-width: 520px;
-    line-height: 1.8;
-    margin-bottom: 32px;
-  }
-  .hero-bio a {
-    color: var(--text);
-    text-decoration: underline;
-    text-decoration-color: var(--border);
-    text-underline-offset: 3px;
-    transition: text-decoration-color 0.2s;
-  }
-  .hero-bio a:hover { text-decoration-color: var(--text); }
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      padding: 140px 48px 80px;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 80px;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .hero-content { }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--muted2);
+      letter-spacing: 0.06em;
+      margin-bottom: 28px;
+    }
+    .hero-tag .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
+      50% { box-shadow: 0 0 0 6px rgba(34,197,94,0); }
+    }
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(42px, 6vw, 72px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 28px;
+    }
+    .hero h1 .accent { color: var(--accent); }
+    .hero-bio {
+      font-size: 16px;
+      color: var(--muted2);
+      max-width: 540px;
+      margin-bottom: 20px;
+      line-height: 1.8;
+    }
+    .hero-bio p + p { margin-top: 16px; }
+    .hero-bio strong { color: var(--text); font-weight: 400; }
+    .hero-quote {
+      border-left: 2px solid var(--accent);
+      padding-left: 20px;
+      margin: 28px 0;
+      font-style: italic;
+      color: var(--muted2);
+      font-size: 15px;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 36px;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 14px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted2);
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 14px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+    }
+    .btn-ghost:hover { border-color: var(--muted); color: var(--text); transform: translateY(-2px); }
 
-  .status {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-  }
-  .status-dot {
-    width: 7px; height: 7px;
-    background: #22c55e;
-    border-radius: 50%;
-    animation: blink 2s ease infinite;
-  }
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
+    /* HERO STATS CARD */
+    .hero-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(249,115,22,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .card-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .stat-val {
+      font-family: 'Syne', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .card-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 20px 0;
+    }
+    .card-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--muted2);
+      padding: 6px 0;
+    }
+    .card-row span:last-child { color: var(--text); }
+    .badge {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid;
+    }
+    .badge-orange { color: var(--accent); border-color: rgba(249,115,22,0.3); background: rgba(249,115,22,0.08); }
+    .badge-green { color: var(--green); border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.08); }
 
-  /* Stats row - CF stats load live */
-  .stats-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    border: 1px solid var(--border);
-    margin-bottom: 88px;
-  }
-  .stat {
-    padding: 24px 16px;
-    border-right: 1px solid var(--border);
-    text-align: center;
-  }
-  .stat:last-child { border-right: none; }
-  .stat-val {
-    font-size: 26px;
-    font-weight: 500;
-    letter-spacing: -0.5px;
-    display: block;
-    margin-bottom: 4px;
-    min-height: 36px;
-  }
-  .stat-key {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .loading { color: var(--muted); font-size: 18px; }
+    /* SECTIONS */
+    section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 100px 48px;
+    }
+    .section-header {
+      margin-bottom: 56px;
+    }
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    .section-sub {
+      color: var(--muted2);
+      margin-top: 12px;
+      max-width: 560px;
+      font-size: 15px;
+    }
 
-  .achievement {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 24px;
-    align-items: start;
-    padding: 28px 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .achievement:first-of-type { border-top: 1px solid var(--border); }
-  .ach-title {
-    font-size: 15px;
-    font-weight: 500;
-    margin-bottom: 6px;
-    letter-spacing: -0.2px;
-  }
-  .ach-desc {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.6;
-    max-width: 440px;
-  }
-  .ach-meta { text-align: right; flex-shrink: 0; }
-  .ach-highlight {
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    color: var(--text);
-    display: block;
-    margin-bottom: 4px;
-  }
-  .ach-year {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-  }
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+      cursor: default;
+    }
+    .project-card:hover {
+      border-color: rgba(249,115,22,0.3);
+      transform: translateY(-3px);
+    }
+    .project-card.featured {
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+    .project-accent {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .project-card:hover .project-accent { opacity: 1; }
+    .project-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      background: rgba(249,115,22,0.1);
+      border: 1px solid rgba(249,115,22,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 18px;
+    }
+    .project-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .project-desc {
+      color: var(--muted2);
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      padding: 4px 10px;
+      border-radius: 5px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      color: var(--muted2);
+    }
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--accent);
+      text-decoration: none;
+      transition: gap 0.2s;
+    }
+    .project-link:hover { gap: 10px; }
+    .project-visual {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      position: relative;
+      overflow: hidden;
+    }
+    .terminal-lines {
+      padding: 16px;
+      width: 100%;
+    }
+    .t-line {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      display: flex;
+      gap: 8px;
+    }
+    .t-line .t-prompt { color: var(--accent); }
+    .t-line .t-cmd { color: var(--text); }
+    .t-line .t-out { color: var(--green); }
 
-  .project {
-    padding: 28px 0;
-    border-bottom: 1px solid var(--border);
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 24px;
-    align-items: start;
-  }
-  .project:first-of-type { border-top: 1px solid var(--border); }
-  .project-name {
-    font-size: 15px;
-    font-weight: 500;
-    letter-spacing: -0.2px;
-    margin-bottom: 6px;
-  }
-  .project-desc {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.6;
-    margin-bottom: 12px;
-    max-width: 440px;
-  }
-  .project-stack { display: flex; flex-wrap: wrap; gap: 6px; }
-  .stack-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    border: 1px solid var(--border);
-    padding: 2px 8px;
-  }
-  .project-links-col {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: flex-end;
-    flex-shrink: 0;
-  }
-  .plink {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.2s;
-    white-space: nowrap;
-  }
-  .plink:hover, .plink.live { color: var(--text); }
+    /* ACHIEVEMENTS */
+    .achievements-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .achievement {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      padding: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: border-color 0.2s;
+    }
+    .achievement:hover { border-color: rgba(249,115,22,0.25); }
+    .ach-icon {
+      font-size: 28px;
+      flex-shrink: 0;
+      width: 52px; height: 52px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--bg2);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    .ach-content { }
+    .ach-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+    .ach-sub { color: var(--muted2); font-size: 13px; }
 
-  /* Skills grid — 4 cols now */
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 40px;
-  }
-  .skill-group-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 14px;
-  }
-  .skill-group-items { display: flex; flex-direction: column; gap: 8px; }
-  .skill-group-items span { font-size: 13px; color: #333; }
+    /* CP SECTION */
+    .cp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .cp-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+    }
+    .cp-card-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .cp-concept {
+      display: flex;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      align-items: flex-start;
+    }
+    .cp-concept:last-child { border-bottom: none; }
+    .cp-bullet {
+      color: var(--accent);
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .cp-concept-text { color: var(--muted2); }
+    .cp-concept-text strong { color: var(--text); font-weight: 400; }
+    .rating-bar-wrap { margin-top: 16px; }
+    .rating-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .rating-bar-track {
+      height: 6px;
+      background: var(--bg2);
+      border-radius: 99px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .rating-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transition: width 1s ease;
+    }
 
-  /* LC stats */
-  .lc-stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    border: 1px solid var(--border);
-    margin-top: 28px;
-  }
-  .lc-stat {
-    padding: 20px 16px;
-    border-right: 1px solid var(--border);
-    text-align: center;
-  }
-  .lc-stat:last-child { border-right: none; }
-  .lc-stat-val {
-    font-size: 22px;
-    font-weight: 500;
-    letter-spacing: -0.5px;
-    display: block;
-    margin-bottom: 4px;
-  }
-  .lc-stat-key {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .easy { color: #22c55e; }
-  .medium { color: #f59e0b; }
-  .hard { color: #ef4444; }
+    /* CONTACT */
+    .contact-wrap {
+      text-align: center;
+      padding: 80px 48px;
+      border-top: 1px solid var(--border);
+    }
+    .contact-wrap .section-label { justify-content: center; }
+    .contact-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .contact-sub {
+      color: var(--muted2);
+      font-size: 15px;
+      margin-bottom: 36px;
+    }
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
 
-  .contact-row {
-    display: flex;
-    gap: 24px;
-    flex-wrap: wrap;
-    padding-top: 32px;
-    border-top: 1px solid var(--border);
-  }
-  .clink {
-    font-size: 13px;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .clink:hover { color: var(--text); }
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 32px 48px;
+      border-top: 1px solid var(--border);
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
 
-  footer {
-    padding: 40px 0 48px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 80px;
-  }
+    /* ANIMATIONS */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-  .fade {
-    opacity: 0;
-    transform: translateY(16px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  .fade.in { opacity: 1; transform: translateY(0); }
-</style>
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .hero { grid-template-columns: 1fr; padding: 120px 24px 60px; gap: 48px; }
+      .hero-card { display: none; }
+      section { padding: 60px 24px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-card.featured { grid-column: span 1; grid-template-columns: 1fr; }
+      .cp-grid { grid-template-columns: 1fr; }
+      .contact-wrap { padding: 60px 24px; }
+    }
+  </style>
 </head>
 <body>
 
-<nav>
-  <a href="#" class="nav-name">Ankit Ram</a>
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Ankit Ram</a>
   <ul class="nav-links">
-    <li><a href="#achievements">Achievements</a></li>
+    <li><a href="#about">About</a></li>
     <li><a href="#projects">Projects</a></li>
+    <li><a href="#cp">CP</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li><a href="#" class="nav-resume">↓ Resume</a></li>
   </ul>
 </nav>
 
-<div class="hero fade">
-  <h1>Competitive programmer<br><em>and developer.</em></h1>
-  <p class="hero-bio">
-    2nd semester CS student. Rated on <a href="https://codeforces.com/profile/codecrusader69" target="_blank">Codeforces</a>, building tools that matter, and grinding algorithms daily. Interested in high-frequency trading and systems programming.
-  </p>
-  <span class="status">
-    <span class="status-dot"></span>
-    Available for internships · Summer 2026
-  </span>
-</div>
-
-<!-- Live CF Stats -->
-<div class="stats-row fade">
-  <div class="stat">
-    <span class="stat-val loading" id="cf-rating">—</span>
-    <span class="stat-key">CF Rating</span>
-  </div>
-  <div class="stat">
-    <span class="stat-val loading" id="cf-maxrating">—</span>
-    <span class="stat-key">CF Max</span>
-  </div>
-  <div class="stat">
-    <span class="stat-val">26</span>
-    <span class="stat-key">LC Solved</span>
-  </div>
-  <div class="stat">
-    <span class="stat-val">98%</span>
-    <span class="stat-key">Java Diploma</span>
-  </div>
-</div>
-
-<!-- Achievements -->
-<div class="section fade" id="achievements">
-  <p class="section-label">Achievements</p>
-
-  <div class="achievement">
-    <div>
-      <div class="ach-title">Optima Techfest — 1st Place</div>
-      <div class="ach-desc">Won the 3D Modelling Optimisation Workshop at Optima Techfest, competing across disciplines in a technical challenge combining design precision and optimisation logic.</div>
+<!-- HERO -->
+<div class="hero" id="about">
+  <div class="hero-content">
+    <div class="hero-tag">
+      <span class="dot"></span>
+      Available for internships · Summer 2026
     </div>
-    <div class="ach-meta">
-      <span class="ach-highlight">₹20,000 (~$240)</span>
-      <span class="ach-year">2023</span>
+    <h1>Hello, I'm<br><span class="accent">Ankit Ram</span> 👋</h1>
+    <div class="hero-bio">
+      <p>I'm a builder. I've been coding for <strong>7 years</strong> — started because I wanted to make games, stayed because I fell in love with algorithms.</p>
+      <p>CS at IILM Delhi. I grind <strong>competitive programming</strong> daily and build full-stack products that actually work.
+      <p>I don't believe I'm the best programmer in the room. But I believe in showing up every day and getting sharper.</p>
+    </div>
+    <div class="hero-quote">
+      Every problem I solve is one step closer to systems that run at the edge of what's computationally possible.
+    </div>
+    <div class="hero-ctas">
+      <a href="#projects" class="btn-primary">View Projects →</a>
+      <a href="https://github.com/Ankitdotraider" target="_blank" class="btn-ghost">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a href="https://codeforces.com/profile/codecrusader69" target="_blank" class="btn-ghost">CF Profile</a>
     </div>
   </div>
 
-  <div class="achievement">
-    <div>
-      <div class="ach-title">Diploma in Java Programming — Distinction</div>
-      <div class="ach-desc">Completed a formal Java programming diploma with distinction, covering core Java, OOP principles, data structures, and software design fundamentals.</div>
-    </div>
-    <div class="ach-meta">
-      <span class="ach-highlight">98%</span>
-      <span class="ach-year">Distinction</span>
-    </div>
-  </div>
-
-  <div class="achievement">
-    <div>
-      <div class="ach-title">Codeforces — Rated Competitor</div>
-      <div class="ach-desc">Actively competing in Div. 2 rounds. Solved problems across implementation, math, greedy, strings, and dynamic programming with a 32-day consecutive solving streak.</div>
-    </div>
-    <div class="ach-meta">
-      <span class="ach-highlight" id="cf-rating-ach">Rating 657</span>
-      <span class="ach-year">2026</span>
-    </div>
-  </div>
-</div>
-
-<!-- Projects -->
-<div class="section fade" id="projects">
-  <p class="section-label">Projects</p>
-
-  <div class="project">
-    <div>
-      <div class="project-name">CF Tracker</div>
-      <div class="project-desc">Codeforces analytics dashboard. Visualizes rating history, tag-wise problem breakdown, contest performance, personalized problem recommendations based on weak topics, and side-by-side user comparison.</div>
-      <div class="project-stack">
-        <span class="stack-tag">JavaScript</span>
-        <span class="stack-tag">HTML/CSS</span>
-        <span class="stack-tag">Codeforces API</span>
-        <span class="stack-tag">Chart.js</span>
-        <span class="stack-tag">Vercel</span>
+  <div class="hero-card">
+    <div class="card-label">// stats.json</div>
+    <div class="stats-grid">
+      <div class="stat">
+        <div class="stat-val">1051</div>
+        <div class="stat-label">CF Rating</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">1200</div>
+        <div class="stat-label">Target</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">7yr</div>
+        <div class="stat-label">Coding</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">2nd</div>
+        <div class="stat-label">Sem, B.Tech CS</div>
       </div>
     </div>
-    <div class="project-links-col">
-      <a href="https://cf-tracker-app.vercel.app" target="_blank" class="plink live">↗ Live</a>
-      <a href="https://github.com/Ankitdotraider/cf-tracker" target="_blank" class="plink">GitHub</a>
+    <div class="card-divider"></div>
+    <div class="card-row">
+      <span>Handle</span>
+      <span><span class="badge badge-orange">codecrusader69</span></span>
     </div>
-  </div>
-</div>
-
-<!-- Skills -->
-<div class="section fade">
-  <p class="section-label">Skills</p>
-  <div class="skills-grid">
-    <div>
-      <div class="skill-group-title">Languages</div>
-      <div class="skill-group-items">
-        <span>C++</span>
-        <span>Java</span>
-        <span>Python</span>
-        <span>JavaScript</span>
-        <span>HTML / CSS</span>
+    <div class="card-row">
+      <span>Status</span>
+      <span><span class="badge badge-green">open to work</span></span>
+    </div>
+    <div class="card-divider"></div>
+    <div class="rating-bar-wrap">
+      <div class="rating-bar-label">
+        <span>Rating progress</span>
+        <span>1051 / 1200</span>
       </div>
-    </div>
-    <div>
-      <div class="skill-group-title">Algorithms & CP</div>
-      <div class="skill-group-items">
-        <span>Dynamic Programming</span>
-        <span>Greedy</span>
-        <span>Binary Search</span>
-        <span>Two Pointers</span>
-        <span>Sorting & Searching</span>
-      </div>
-    </div>
-    <div>
-      <div class="skill-group-title">Machine Learning</div>
-      <div class="skill-group-items">
-        <span>NumPy / Pandas</span>
-        <span>Matplotlib</span>
-        <span>Scikit-learn</span>
-        <span>Data Analysis</span>
-        <span>Model Training</span>
-      </div>
-    </div>
-    <div>
-      <div class="skill-group-title">Tools</div>
-      <div class="skill-group-items">
-        <span>Git / GitHub</span>
-        <span>VS Code</span>
-        <span>Vercel</span>
-        <span>Jupyter Notebook</span>
-        <span>Codeforces / LeetCode</span>
+      <div class="rating-bar-track">
+        <div class="rating-bar-fill" style="width: 87%"></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Competitive Programming -->
-<div class="section fade">
-  <p class="section-label">Competitive Programming</p>
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header fade-up">
+    <div class="section-label">// projects</div>
+    <h2 class="section-title">Things I've built</h2>
+    <p class="section-sub">Full-stack products, from idea to live deployment. No tutorials — real problems I wanted to solve.</p>
+  </div>
 
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; border: 1px solid var(--border);">
-    <div style="padding: 28px; border-right: 1px solid var(--border);">
-      <div class="skill-group-title" style="margin-bottom: 16px;">Codeforces</div>
-      <div style="font-size: 13px; color: #444; line-height: 2;">
-        <div>Handle — <a href="https://codeforces.com/profile/codecrusader69" target="_blank" style="color:var(--text); text-decoration:underline; text-decoration-color: var(--border); text-underline-offset:3px;">codecrusader69</a></div>
-        <div>Rating — <span id="cf-rating-inline">loading...</span></div>
-        <div>Max Rating — <span id="cf-max-inline">loading...</span></div>
-        <div>Rank — <span id="cf-rank-inline">loading...</span></div>
+  <div class="projects-grid">
+    <!-- Featured -->
+    <div class="project-card featured fade-up">
+      <div class="project-accent"></div>
+      <div>
+        <div class="project-icon">📊</div>
+        <div class="project-name">CF Tracker — Full Stack</div>
+        <div class="project-desc">
+          A full-stack Codeforces tracker with JWT auth, persistent user data, and live CF API integration. Built because the simple version wasn't enough — this one remembers you.
+        </div>
+        <div class="project-tags">
+          <span class="tag">React</span>
+          <span class="tag">Recharts</span>
+          <span class="tag">Node / Express</span>
+          <span class="tag">Prisma 5</span>
+          <span class="tag">PostgreSQL</span>
+          <span class="tag">JWT</span>
+          <span class="tag">Railway</span>
+          <span class="tag">Vercel</span>
+        </div>
+        <a href="https://cf-tracker-app.vercel.app" target="_blank" class="project-link">View live →</a>
+      </div>
+      <div class="project-visual">
+        <div class="terminal-lines">
+          <div class="t-line"><span class="t-prompt">POST</span><span class="t-cmd">/signup</span></div>
+          <div class="t-line"><span class="t-prompt">→</span><span class="t-out">{ token: "eyJhbG..." }</span></div>
+          <div class="t-line"><span class="t-prompt">GET</span><span class="t-cmd">/me/stats</span></div>
+          <div class="t-line"><span class="t-prompt">→</span><span class="t-out">{ rating: 1051, solved: 83 }</span></div>
+          <div class="t-line"><span class="t-prompt">DB</span><span class="t-cmd">User → Railway/Postgres</span></div>
+        </div>
       </div>
     </div>
-    <div style="padding: 28px;">
-      <div class="skill-group-title" style="margin-bottom: 16px;">LeetCode</div>
-      <div style="font-size: 13px; color: #444; line-height: 2;">
-        <div>Handle — <a href="https://leetcode.com/anky2" target="_blank" style="color:var(--text); text-decoration:underline; text-decoration-color: var(--border); text-underline-offset:3px;">anky2</a></div>
-        <div>Solved — <span>26 problems</span></div>
-        <div>Easy — <span class="easy">11</span> · Med — <span class="medium">13</span> · Hard — <span class="hard">2</span></div>
-        <div>Max Streak — 22 days</div>
+
+    <div class="project-card fade-up">
+      <div class="project-accent"></div>
+      <div class="project-icon">🏭</div>
+      <div class="project-name">3D Factory Simulation</div>
+      <div class="project-desc">
+        Built a real-time 3D factory simulation in OptiSim to optimize production efficiency. Won 1st Runner-Up at IIT Kharagpur Hackathon competing against teams from across India.
+      </div>
+      <div class="project-tags">
+        <span class="tag">OptiSim</span>
+        <span class="tag">3D Simulation</span>
+        <span class="tag">Optimization</span>
+        <span class="tag">IIT KGP Hackathon</span>
+      </div>
+      <a href="#" class="project-link">🏆 1st Runner-Up →</a>
+    </div>
+
+    <div class="project-card fade-up">
+      <div class="project-accent"></div>
+      <div class="project-icon">🤖</div>
+      <div class="project-name">ML Classifier</div>
+      <div class="project-desc">
+        Python-based ML classifier trained and evaluated on Kaggle. End-to-end: data cleaning, feature engineering, model selection, evaluation.
+      </div>
+      <div class="project-tags">
+        <span class="tag">Python</span>
+        <span class="tag">scikit-learn</span>
+        <span class="tag">Kaggle</span>
+        <span class="tag">Pandas</span>
+      </div>
+      <a href="https://github.com/Ankitdotraider" target="_blank" class="project-link">View on GitHub →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section>
+  <div class="section-header fade-up">
+    <div class="section-label">// achievements</div>
+    <h2 class="section-title">What I've done</h2>
+  </div>
+  <div class="achievements-list">
+    <div class="achievement fade-up">
+      <div class="ach-icon">🏆</div>
+      <div class="ach-content">
+        <div class="ach-title">1st Runner-Up — IIT Kharagpur Hackathon</div>
+        <div class="ach-sub">Built a 3D factory simulation in OptiSim to optimize production efficiency. Competed against teams from top engineering colleges across India.</div>
+      </div>
+    </div>
+    <div class="achievement fade-up">
+      <div class="ach-icon">⚡</div>
+      <div class="ach-content">
+        <div class="ach-title">Codeforces Rating: 1051 · Target: 1200</div>
+        <div class="ach-sub">Active competitive programmer. 2 CF problems + 1 LeetCode daily. Consistent grind toward expert-level rating.</div>
+      </div>
+    </div>
+    <div class="achievement fade-up">
+      <div class="ach-icon">🌐</div>
+      <div class="ach-content">
+        <div class="ach-title">GSoC 2026 Contributor — omegaUp</div>
+        <div class="ach-sub">Open PR #9605 — global key rename across the codebase. Under review. Lint passing. Reviewer: pabo99.</div>
+      </div>
+    </div>
+    <div class="achievement fade-up">
+      <div class="ach-icon">📐</div>
+      <div class="ach-content">
+        <div class="ach-title">JEE Advanced — Rank 17,806</div>
+        <div class="ach-sub">One of the toughest engineering entrance exams in the world. Cleared it, moved on, kept building.</div>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- Contact -->
-<div class="section fade" id="contact">
-  <p class="section-label">Contact</p>
-  <p style="font-size:15px; color:#444; margin-bottom: 28px; max-width: 400px;">
-    Open to internship opportunities for Summer 2026. Feel free to reach out.
-  </p>
-  <div class="contact-row">
-    <a href="mailto:ankiittt15@gmail.com" class="clink">ankiittt15@gmail.com</a>
-    <a href="https://github.com/Ankitdotraider" target="_blank" class="clink">GitHub</a>
-    <a href="https://codeforces.com/profile/codecrusader69" target="_blank" class="clink">Codeforces</a>
-    <a href="https://leetcode.com/anky2" target="_blank" class="clink">LeetCode</a>
-    <a href="https://twitter.com/halkattjawaniii" target="_blank" class="clink">Twitter</a>
+<!-- CP SECTION -->
+<section id="cp">
+  <div class="section-header fade-up">
+    <div class="section-label">// competitive_programming</div>
+    <h2 class="section-title">The algorithm grind</h2>
+    <p class="section-sub">The mental models I've internalized. Not tricks — ways of seeing problems differently.</p>
+  </div>
+  <div class="cp-grid">
+    <div class="cp-card fade-up">
+      <div class="cp-card-title">🧠 Core Concepts</div>
+      <div class="cp-concept">
+        <span class="cp-bullet">→</span>
+        <span class="cp-concept-text"><strong>GCD as divisibility aggregator</strong> — gcd(a·b, b·c) = b when gcd(a,c)=1</span>
+      </div>
+      <div class="cp-concept">
+        <span class="cp-bullet">→</span>
+        <span class="cp-concept-text"><strong>Parity</strong> — subtraction = addition mod 2</span>
+      </div>
+      <div class="cp-concept">
+        <span class="cp-bullet">→</span>
+        <span class="cp-concept-text"><strong>"What if" queries</strong> — compute delta, never mutate the array</span>
+      </div>
+      <div class="cp-concept">
+        <span class="cp-bullet">→</span>
+        <span class="cp-concept-text"><strong>Manhattan distance</strong> — maximize by picking diagonal corner pairs</span>
+      </div>
+      <div class="cp-concept">
+        <span class="cp-bullet">→</span>
+        <span class="cp-concept-text"><strong>Consecutive coprimality</strong> — two consecutive integers never share a divisor ≥ 2</span>
+      </div>
+      <div class="cp-concept">
+        <span class="cp-bullet">→</span>
+        <span class="cp-concept-text"><strong>LCM trick</strong> — for finding divisor intervals efficiently</span>
+      </div>
+    </div>
+    <div class="cp-card fade-up">
+      <div class="cp-card-title">📈 Progress</div>
+      <div class="rating-bar-wrap" style="margin-bottom: 20px;">
+        <div class="rating-bar-label">
+          <span>CF Rating</span>
+          <span>1051 → 1200</span>
+        </div>
+        <div class="rating-bar-track">
+          <div class="rating-bar-fill" style="width: 87%"></div>
+        </div>
+      </div>
+      <div class="rating-bar-wrap" style="margin-bottom: 20px;">
+        <div class="rating-bar-label">
+          <span>Div 2 A/B solve rate</span>
+          <span>strong</span>
+        </div>
+        <div class="rating-bar-track">
+          <div class="rating-bar-fill" style="width: 80%"></div>
+        </div>
+      </div>
+      <div class="card-divider" style="margin: 20px 0;"></div>
+      <div class="card-row"><span>Handle</span><span class="badge badge-orange">codecrusader69</span></div>
+      <div class="card-row"><span>Daily</span><span>2 CF + 1 LC</span></div>
+      <div class="card-row"><span>Platform</span><span>Codeforces + LeetCode</span></div>
+      <div class="card-row"><span>Long-term target</span><span>HFT (Jane Street, Optiver)</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact-wrap" id="contact">
+  <div class="section-label" style="display:block; margin-bottom:12px;">// contact</div>
+  <div class="contact-title">Let's build something.</div>
+  <div class="contact-sub">Open to internships for Summer 2026. If you're building something interesting or want to talk algorithms, reach out.</div>
+  <div class="contact-links">
+    <a href="mailto:ankit@example.com" class="btn-primary">Send an email →</a>
+    <a href="https://github.com/Ankitdotraider" target="_blank" class="btn-ghost">GitHub</a>
+    <a href="https://codeforces.com/profile/codecrusader69" target="_blank" class="btn-ghost">Codeforces</a>
   </div>
 </div>
 
 <footer>
-  <span>Ankit Ram © 2026</span>
-  <span>Greater Noida, IN</span>
+  ANKIT RAM · IILM DELHI · BUILT FROM SCRATCH · 2026
 </footer>
 
 <script>
-  // Scroll reveal
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Fade up on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
   }, { threshold: 0.1 });
-  document.querySelectorAll('.fade').forEach(el => observer.observe(el));
 
-  // Live CF stats
-  async function loadCFStats() {
-    try {
-      const res = await fetch('https://codeforces.com/api/user.info?handles=codecrusader69');
-      const data = await res.json();
-      const user = data.result[0];
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-      document.getElementById('cf-rating').textContent = user.rating || '—';
-      document.getElementById('cf-maxrating').textContent = user.maxRating || '—';
-      document.getElementById('cf-rating-ach').textContent = `Rating ${user.rating}`;
-      document.getElementById('cf-rating-inline').textContent = user.rating;
-      document.getElementById('cf-max-inline').textContent = user.maxRating;
-      document.getElementById('cf-rank-inline').textContent = user.rank || '—';
-
-      // Remove loading style
-      document.getElementById('cf-rating').classList.remove('loading');
-      document.getElementById('cf-maxrating').classList.remove('loading');
-    } catch(e) {
-      document.getElementById('cf-rating').textContent = '657';
-      document.getElementById('cf-maxrating').textContent = '657';
-    }
-  }
-
-  loadCFStats();
+  // Animate rating bar on scroll
+  const bars = document.querySelectorAll('.rating-bar-fill');
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const target = entry.target.style.width;
+        entry.target.style.width = '0%';
+        setTimeout(() => { entry.target.style.width = target; }, 100);
+        barObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  bars.forEach(b => barObserver.observe(b));
 </script>
 </body>
 </html>
